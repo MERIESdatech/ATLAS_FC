@@ -1,86 +1,508 @@
-
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-     <link rel="apple-touch-icon" sizes="180x180" href="assets/logo/favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/logo/favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="assets/logo/favicon/favicon-32x32.png">
-    <link rel="manifest" href="assets/logo/favicon/site.webmanifest">
-    <title>TACHKILA</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-
-</head>
-
-<body class="bg-white">
-    <header class="header bg-green-900 flex items-center justify-between gap-4 p-4 flex-wrap">   
-        <div class="logo flex items-center gap-3">
-
-            <img src="assets/logo/logo.png" alt="Logo"
-                 class="w-14 h-14 rounded-full object-cover ml-10">
-        </div>
-
-       
-        <div class="position flex items-center gap-6">
-
-            
-            <div class="GB flex items-center gap-2">
-                <span class="w-3 h-3 bg-yellow-500 rounded-full"></span>
-                <span class="text-yellow-500 text-sm font-bold">GB</span>
-            </div>
-
-            
-            <div class="DEF flex items-center gap-2">
-                <span class="w-3 h-3 bg-blue-500 rounded-full"></span>
-                <span class="text-blue-500 text-sm font-bold">DEF</span>
-            </div>
-
-           
-            <div class="MIL flex items-center gap-2">
-                <span class="w-3 h-3 bg-green-500 rounded-full"></span>
-                <span class="text-green-500 text-sm font-bold">MIL</span>
-            </div>
-
-            
-            <div class="ATT flex items-center gap-2">
-                <span class="w-3 h-3 bg-red-500 rounded-full"></span>
-                <span class="text-red-500 text-sm font-bold">ATT</span>
-            </div>
-
-        </div>
-
-        
-        <div class="INFO flex items-center gap-3">
-
-            <span class="SHEMA text-slate-400 font-semibold">
-                Schéma
-            </span>
-              
-
-            <span class="SHEMA-NUMBER bg-slate-900 text-white px-4 py-2 rounded-xl border border-slate-700 font-bold">
-                4-4-2
-            </span>
-
-        </div>
-
-    </header>
-
-      <div class="flex">
-
-       <aside class="sidebar w-[400px] min-h-screen bg-green-950 border-r border-slate-700 p-3">
-                <button class="w-full bg-red-900 hover:bg-green-700 text-white font-bold text-lg py-4 rounded-xl transition-colors">
-                    Ajouter un joueur
-                </button>
-        </aside> 
-        
-        <main class="flex-1">
-        <img src="assets/background/terrain.png" alt="Terrain de football" class="w-full h-full object-cover">
-        </main>
-            
-        </div> 
-        
-        
-
-</body>
+<html lang="fr">
+ <head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>
+   Atlas FC
+  </title>
+  <link href="assets/logo/favicon/favicon.ico" rel="icon"/>
+  <script src="https://cdn.tailwindcss.com">
+  </script>
+  <link href="style.css" rel="stylesheet"/>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" rel="stylesheet"/>
+ </head>
+ <body class="min-h-screen bg-[#030d13] bg-[url('assets/background/main.png')] bg-cover bg-center bg-fixed text-white font-sans">
+  <header class="min-h-[132px] mx-[4%] px-7 py-3 items-center justify-between gap-5 border border-[#c4a65e] border-t-0 rounded-b-[26px] shadow-xl grid grid-cols-1 md:grid-cols-[auto_1fr_auto]">
+   <section class="flex items-center gap-5 shrink-0">
+    <img alt="Atlas FC" class="w-16 h-16 object-contain" src="assets/logo/logo.png"/>
+   </section>
+   <section aria-label="L&eacute;gende des postes" class="flex flex-1 flex-wrap justify-center gap-4 xl:gap-9 font-bold">
+    <span>
+     <i class="inline-block size-4 rounded-full shrink-0 bg-amber-400">
+     </i>
+     GB
+    </span>
+    <span>
+     <i class="inline-block size-4 rounded-full shrink-0 bg-blue-500">
+     </i>
+     DEF
+    </span>
+    <span>
+     <i class="inline-block size-4 rounded-full shrink-0 bg-emerald-500">
+     </i>
+     MIL
+    </span>
+    <span>
+     <i class="inline-block size-4 rounded-full shrink-0 bg-red-500">
+     </i>
+     ATT
+    </span>
+   </section>
+   <label class="bg-[#071923] border border-[#29414c] rounded-xl px-4 py-3 whitespace-nowrap font-bold">
+    Sch&eacute;ma
+    <select aria-label="Sch&eacute;ma" class="ml-2 bg-[#0a1820] border border-[#263a43] rounded-lg p-2 text-white appearance-none">
+     <option>
+      4-4-2
+     </option>
+    </select>
+   </label>
+  </header>
+  <section aria-label="Tableau de bord de l&rsquo;&eacute;quipe" class="grid grid-cols-1 lg:grid-cols-[350px_minmax(0,1fr)] 2xl:grid-cols-[420px_minmax(0,1fr)] gap-4 px-[2%] py-3 min-h-[calc(100vh-132px)]">
+   <aside class="min-w-0 overflow-hidden p-4 rounded-2xl border border-[#c7a95b] bg-[#03151bf2] shadow-[inset_0_0_15px_#0e3636] grid content-start">
+    <button class="w-full rounded-xl border border-[#ffe080] bg-gradient-to-b from-[#f2cf63] to-[#bb8e26] px-4 py-4 text-[#071018] text-lg font-extrabold shadow-lg hover:brightness-110" type="button">
+     ＋ &nbsp; Ajouter un joueur
+    </button>
+    <section class="mt-4 mb-5">
+     <header class="flex items-center justify-between mb-3">
+      <h3 class="text-white font-bold text-lg">
+       Effectif
+      </h3>
+      <span class="bg-slate-800 border border-slate-700 text-white text-sm px-3 py-1 rounded-lg">
+       12 joueur(s)
+      </span>
+     </header>
+     <p class="text-slate-400 text-sm">
+      Cliquez sur un joueur plac&eacute; pour voir sa case sur le terrain.
+      <i class="fa-solid fa-pen text-white">
+      </i>
+      pour modifier,
+      <i class="fa-solid fa-trash text-white">
+      </i>
+      pour supprimer.
+     </p>
+    </section>
+    <ul class="list-none p-0 m-0 h-[525px] max-h-[65vh] overflow-y-auto overflow-x-hidden">
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="bono" data-role="GB">
+      <img alt="Maillot de BONO" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/goolkeeper.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        BONO
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #1 &middot; GB &middot; 87
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner BONO" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier BONO" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer BONO" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="araujo" data-role="DEF">
+      <img alt="Maillot de ARAUJO" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/def-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        ARAUJO
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #4 &middot; DC &middot; 85
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner ARAUJO" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier ARAUJO" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer ARAUJO" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="kound&eacute;" data-role="DEF">
+      <img alt="Maillot de KOUND&Eacute;" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/def-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        KOUND&Eacute;
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #5 &middot; DC &middot; 84
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner KOUND&Eacute;" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier KOUND&Eacute;" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer KOUND&Eacute;" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="balde" data-role="DEF">
+      <img alt="Maillot de BALDE" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/def-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        BALDE
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #3 &middot; DG &middot; 83
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner BALDE" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier BALDE" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer BALDE" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="cancelo" data-role="DEF">
+      <img alt="Maillot de CANCELO" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/def-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        CANCELO
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #2 &middot; DD &middot; 84
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner CANCELO" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier CANCELO" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer CANCELO" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="pedri" data-role="MIL">
+      <img alt="Maillot de PEDRI" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/mil-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        PEDRI
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #8 &middot; MC &middot; 88
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner PEDRI" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier PEDRI" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer PEDRI" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="de jong" data-role="MIL">
+      <img alt="Maillot de DE JONG" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/mil-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        DE JONG
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #21 &middot; MC &middot; 86
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner DE JONG" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier DE JONG" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer DE JONG" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="raphinha" data-role="MIL">
+      <img alt="Maillot de RAPHINHA" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/mil-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        RAPHINHA
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #11 &middot; MG &middot; 84
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner RAPHINHA" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier RAPHINHA" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer RAPHINHA" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="yamal" data-role="MIL">
+      <img alt="Maillot de YAMAL" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/mil-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        YAMAL
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #22 &middot; MD &middot; 85
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner YAMAL" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier YAMAL" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer YAMAL" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="lewandowski" data-role="ATT">
+      <img alt="Maillot de LEWANDOWSKI" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/att-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        LEWANDOWSKI
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #9 &middot; BU &middot; 90
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner LEWANDOWSKI" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier LEWANDOWSKI" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer LEWANDOWSKI" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="ferran torres" data-role="ATT">
+      <img alt="Maillot de FERRAN TORRES" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/att-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        FERRAN TORRES
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #7 &middot; BU &middot; 82
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner FERRAN TORRES" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier FERRAN TORRES" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer FERRAN TORRES" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+     <li class="sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]" data-name="gavi" data-role="ATT">
+      <img alt="Maillot de GAVI" class="sidebar-shirt w-[31px] h-[35px] object-contain" src="assets/players/att-player.png"/>
+      <span class="sidebar-player-info grid gap-0.5 min-w-0">
+       <strong class="sidebar-player-name text-xs font-extrabold text-white break-words">
+        GAVI
+       </strong>
+       <small class="sidebar-player-meta text-[10px] text-[#a9bdc5]">
+        #10 &middot; ATT &middot; 84
+       </small>
+      </span>
+      <span class="sidebar-actions flex items-center gap-1">
+       <button aria-label="S&eacute;lectionner GAVI" class="sidebar-action select-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="S&eacute;lectionner" type="button">
+        <i aria-hidden="true" class="fa-solid fa-check">
+        </i>
+       </button>
+       <button aria-label="Modifier GAVI" class="sidebar-action edit-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Modifier" type="button">
+        <i aria-hidden="true" class="fa-solid fa-pen">
+        </i>
+       </button>
+       <button aria-label="Supprimer GAVI" class="sidebar-action remove-action inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]" title="Supprimer" type="button">
+        <i aria-hidden="true" class="fa-solid fa-trash">
+        </i>
+       </button>
+      </span>
+     </li>
+    </ul>
+   </aside>
+   <main class="min-w-0 rounded-2xl border border-[#c7a95b] bg-[#03151bf2] p-3 shadow-[inset_0_0_15px_#0e3636] grid grid-rows-1">
+    <figure aria-label="Composition tactique 4-4-2" class="relative flex-1 min-h-[430px] md:min-h-[610px] rounded-xl overflow-hidden bg-[url('assets/background/ter.png')] bg-center bg-[length:100%_100%] bg-no-repeat m-0">
+     <section class="terrain-grid">
+      <article class="pitch-player gb color-gb">
+       <figure class="shirt">
+        <img alt="" src="assets/players/goolkeeper.png"/>
+        <span>
+         1
+        </span>
+       </figure>
+       <small class="pitch-role">
+        GB
+       </small>
+      </article>
+      <article class="pitch-player dc1 color-def">
+       <figure class="shirt">
+        <img alt="" src="assets/players/def-player.png"/>
+        <span>
+         4
+        </span>
+       </figure>
+       <small class="pitch-role">
+        DC
+       </small>
+      </article>
+      <article class="pitch-player dc2 color-def">
+       <figure class="shirt">
+        <img alt="" src="assets/players/def-player.png"/>
+        <span>
+         5
+        </span>
+       </figure>
+       <small class="pitch-role">
+        DC
+       </small>
+      </article>
+      <article class="pitch-player dg color-def">
+       <figure class="shirt">
+        <img alt="" src="assets/players/def-player.png"/>
+        <span>
+         3
+        </span>
+       </figure>
+       <small class="pitch-role">
+        DG
+       </small>
+      </article>
+      <article class="pitch-player dd color-def">
+       <figure class="shirt">
+        <img alt="" src="assets/players/def-player.png"/>
+        <span>
+         2
+        </span>
+       </figure>
+       <small class="pitch-role">
+        DD
+       </small>
+      </article>
+      <article class="pitch-player mc1 color-mil">
+       <figure class="shirt">
+        <img alt="" src="assets/players/mil-player.png"/>
+        <span>
+         8
+        </span>
+       </figure>
+       <small class="pitch-role">
+        MC
+       </small>
+      </article>
+      <article class="pitch-player mc2 color-mil">
+       <figure class="shirt">
+        <img alt="" src="assets/players/mil-player.png"/>
+        <span>
+         21
+        </span>
+       </figure>
+       <small class="pitch-role">
+        MC
+       </small>
+      </article>
+      <article class="pitch-player mg color-mil">
+       <figure class="shirt">
+        <img alt="" src="assets/players/mil-player.png"/>
+        <span>
+         11
+        </span>
+       </figure>
+       <small class="pitch-role">
+        MG
+       </small>
+      </article>
+      <article class="pitch-player md color-mil">
+       <figure class="shirt">
+        <img alt="" src="assets/players/mil-player.png"/>
+        <span>
+         22
+        </span>
+       </figure>
+       <small class="pitch-role">
+        MD
+       </small>
+      </article>
+      <article class="pitch-player bu1 color-att">
+       <figure class="shirt">
+        <img alt="" src="assets/players/att-player.png"/>
+        <span>
+         9
+        </span>
+       </figure>
+       <small class="pitch-role">
+        BU
+       </small>
+      </article>
+      <article class="pitch-player bu2 color-att">
+       <figure class="shirt">
+        <img alt="" src="assets/players/att-player.png"/>
+        <span>
+         7
+        </span>
+       </figure>
+       <small class="pitch-role">
+        BU
+       </small>
+      </article>
+     </section>
+    </figure>
+   </main>
+  </section>
+ </body>
 </html>
+
