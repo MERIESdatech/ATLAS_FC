@@ -1,51 +1,73 @@
 
-var playerModal = document.getElementById('playerModal');
-var openPlayerModal = document.getElementById('openPlayerModal');
-var closePlayerModal = document.getElementById('closePlayerModal');
-var cancelPlayerModal = document.getElementById('cancelPlayerModal');
-var modalTitle = document.getElementById('modalTitle');
-var playerForm = document.getElementById('playerForm');
-var playerName = document.getElementById('playerName');
-var playerNumber = document.getElementById('playerNumber');
-var nameError = document.getElementById('nameError');
-var posteError = document.getElementById('posteError');
-var numberError = document.getElementById('numberError');
-var playerList = document.getElementById('playerList');
-var playerCount = document.getElementById('playerCount');
-var terrain = document.querySelector('.terrain-grid');
-var confirmBar = document.getElementById('confirmBar');
-var confirmText = document.getElementById('confirmText');
-var confirmDelete = document.getElementById('confirmDelete');
-var cancelDelete = document.getElementById('cancelDelete');
+const playerModal = document.getElementById('playerModal');
+const openPlayerModal = document.getElementById('openPlayerModal');
+const closePlayerModal = document.getElementById('closePlayerModal');
+const cancelPlayerModal = document.getElementById('cancelPlayerModal');
+const modalTitle = document.getElementById('modalTitle');
+const playerForm = document.getElementById('playerForm');
+const playerName = document.getElementById('playerName');
+const playerNumber = document.getElementById('playerNumber');
+const nameError = document.getElementById('nameError');
+const posteError = document.getElementById('posteError');
+const numberError = document.getElementById('numberError');
+const playerList = document.getElementById('playerList');
+const playerCount = document.getElementById('playerCount');
+const terrain = document.querySelector('.terrain-grid');
+const confirmBar = document.getElementById('confirmBar');
+const confirmText = document.getElementById('confirmText');
+const confirmDelete = document.getElementById('confirmDelete');
+const cancelDelete = document.getElementById('cancelDelete');
 
 
-var players = [];
-var editingPlayer = null;
-var playerToDelete = null;
+const storageKey = 'atlas-fc-players';
+let players = [];
+try {
+  const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
+  if (Array.isArray(saved)) {
+    players = saved.filter(p => p && typeof p.name === 'string' && positionsForRole(p.role).length && Number.isInteger(Number(p.number))).map(p => ({ ...p, id: p.id || makeId(), position: positionsForRole(p.role).includes(p.position) ? p.position : null }));
+    const used = new Set();
+    players.forEach(p => { if (p.position && used.has(p.position)) p.position = null; if (p.position) used.add(p.position); });
+  }
+} catch (error) { console.warn('Sauvegarde illisible', error); }
+function positionsForRole(role) { return ({GB:['gb'], DEF:['dg','dc1','dc2','dd'], MIL:['mg','mc1','mc2','md'], ATT:['bu1','bu2']})[role] || []; }
+function makeId() { return typeof crypto !== 'undefined' && crypto.randomUUID ? crypto.randomUUID() : 'player-' + Date.now() + '-' + Math.random().toString(36).slice(2); }
+function savePlayers() { try { localStorage.setItem(storageKey, JSON.stringify(players)); } catch (error) { console.warn('Sauvegarde impossible', error); } }
+let notificationTimer;
+function notify(message) {
+  const el = document.getElementById('notification');
+  el.textContent = message;
+  el.classList.remove('hidden');
+  clearTimeout(notificationTimer);
+  notificationTimer = setTimeout(() => el.classList.add('hidden'), 3000);
+}
 
-var positions = {
+let editingPlayer = null;
+let playerToDelete = null;
+let draggedPlayer = null;
+
+const positions = {
   GB: ['gb'],
   DEF: ['dg', 'dc1', 'dc2', 'dd'],
   MIL: ['mg', 'mc1', 'mc2', 'md'],
   ATT: ['bu1', 'bu2']
 };
 
-var images = {
+const images = {
   GB: 'assets/players/goolkeeper.png',
   DEF: 'assets/players/def-player.png',
   MIL: 'assets/players/mil-player.png',
   ATT: 'assets/players/att-player.png'
 };
 
-var colors = {
+const colors = {
   GB: '#fbbf24',
   DEF: '#3b9cff',
   MIL: '#22c55e',
   ATT: '#ef334b'
 };
 
-var nameRegex = /^[\p{L}]+(?:[ '\-][\p{L}]+)*$/u;
-var numberRegex = /^(?:[1-9]|[1-9][0-9])$/;
+const nameRegex = /^[a-zA-ZÀ-ÿ ]+$/;
+const numberRegex = /^[1-9][0-9]?$/;
 
 
 function openModal(player) {
@@ -83,20 +105,20 @@ function closeModal() {
 
 
 function validateName() {
-  var value = playerName.value.trim();
-  var valid = value.length >= 3 && value.length <= 30 && nameRegex.test(value);
+  let value = playerName.value.trim();
+  let valid = value.length >= 3 && value.length <= 30 && nameRegex.test(value);
 
   if (valid) {
     nameError.textContent = '';
   } else {
-    nameError.textContent = 'Nom obligatoire : 3 à 30 caractères, lettres uniquement.';
+    playerName.nextElementSibling.textContent = 'Nom obligatoire : 3 à 30 caractères, lettres uniquement.';
   }
   return valid;
 }
 
 function validateRole() {
-  var checked = playerForm.querySelector('[name="poste"]:checked');
-  var valid = checked !== null;
+  let checked = playerForm.querySelector('[name="poste"]:checked');
+  let valid = checked !== null;
 
   if (valid) {
     posteError.textContent = '';
@@ -107,20 +129,20 @@ function validateRole() {
 }
 
 function validateNumber() {
-  var value = playerNumber.value.trim();
-  var formatOk = numberRegex.test(value);
-  var duplicate = false;
+  let value = playerNumber.value.trim();
+  let formatOk = numberRegex.test(value);
+  let duplicate = false;
 
-  for (var i = 0; i < players.length; i++) {
+  for (let i = 0; i < players.length; i++) {
     if (String(players[i].number) === value && players[i] !== editingPlayer) {
       duplicate = true;
     }
   }
 
   if (!formatOk) {
-    numberError.textContent = 'Numéro obligatoire entre 1 et 99.';
+    playerNumber.nextElementSibling.textContent = 'Numéro obligatoire entre 1 et 99.';
   } else if (duplicate) {
-    numberError.textContent = 'Ce numéro est déjà utilisé.';
+    playerNumber.nextElementSibling.textContent = 'Ce numéro est déjà utilisé.';
   } else {
     numberError.textContent = '';
   }
@@ -129,11 +151,11 @@ function validateNumber() {
 
 
 function findFreePosition(role) {
-  var roleCells = positions[role];
+  let roleCells = positions[role];
 
-  for (var i = 0; i < roleCells.length; i++) {
-    var taken = false;
-    for (var j = 0; j < players.length; j++) {
+  for (let i = 0; i < roleCells.length; i++) {
+    let taken = false;
+    for (let j = 0; j < players.length; j++) {
       if (players[j].position === roleCells[i]) {
         taken = true;
       }
@@ -149,14 +171,15 @@ function togglePlayerPosition(player) {
   if (player.position) {
     player.position = null;
   } else {
-    var free = findFreePosition(player.role);
+    let free = findFreePosition(player.role);
     if (!free) {
-      alert('Aucune position libre pour ce poste.');
+      notify('Aucune position libre pour ce poste.');
       return;
     }
     player.position = free;
   }
   renderPlayers();
+  notify(player.position ? 'Joueur placé sur le terrain.' : 'Joueur retourné au banc.');
 }
 
 
@@ -176,8 +199,10 @@ function closeConfirmBar() {
 
 function deletePlayer() {
   if (playerToDelete) {
-    var index = players.indexOf(playerToDelete);
-    players.splice(index, 1);
+    const item = document.querySelector('[data-player-id="' + playerToDelete.id + '"]');
+    if (item) item.closest('.sidebar-player').remove();
+    players = players.filter(p => p.id !== playerToDelete.id);
+    notify('Joueur supprimé.');
     renderPlayers();
   }
   closeConfirmBar();
@@ -185,7 +210,7 @@ function deletePlayer() {
 
 
 function makeButton(icon, action, label, player) {
-  var button = document.createElement('button');
+  let button = document.createElement('button');
   button.type = 'button';
   button.className = 'sidebar-action ' + action + ' inline-flex items-center justify-center size-[27px] border border-[#35505a] rounded-[7px] bg-[#102731] text-white text-xs hover:bg-[#21424d] hover:border-[#c7a95b]';
   button.title = label;
@@ -195,24 +220,38 @@ function makeButton(icon, action, label, player) {
 }
 
 function createSidebarItem(player) {
-  var li = document.createElement('li');
+  let li = document.createElement('li');
   li.className = 'sidebar-player grid grid-cols-[31px_minmax(0,1fr)_auto] items-center gap-2 min-h-[75px] px-1 py-2 border-b border-[#20343b] odd:bg-[#10232b85]';
   li.dataset.role = player.role;
+  li.dataset.playerId = player.id;
+  if (player.position) li.classList.add('player-placed');
+  li.draggable = true;
+  li.title = 'Glisser vers une position sur le terrain';
+  li.addEventListener('dragstart', function (event) {
+    draggedPlayer = player;
+    event.dataTransfer.setData('text/plain', String(players.indexOf(player)));
+    event.dataTransfer.effectAllowed = 'move';
+    showAvailablePositions(player);
+  });
+  li.addEventListener('dragend', function () {
+    draggedPlayer = null;
+    renderPlayers();
+  });
   li.style.borderLeft = '3px solid ' + colors[player.role];
-  var shirt = document.createElement('img');
+  let shirt = document.createElement('img');
   shirt.src = images[player.role];
   shirt.alt = 'Maillot de ' + player.name;
   shirt.className = 'sidebar-shirt w-[31px] h-[35px] object-contain';
-  var info = document.createElement('span');
+  let info = document.createElement('span');
   info.className = 'sidebar-player-info grid gap-0.5 min-w-0';
-  var name = document.createElement('strong');
+  let name = document.createElement('strong');
   name.className = 'sidebar-player-name text-xs font-extrabold text-white break-words';
   name.textContent = player.name;
-  var status = 'Banc';
+  let status = 'Banc';
   if (player.position) {
     status = 'Terrain';
   }
-  var meta = document.createElement('small');
+  let meta = document.createElement('small');
   meta.className = 'sidebar-player-meta text-[10px]';
   meta.style.color = colors[player.role];
   meta.textContent = '#' + player.number + ' · ' + player.role + ' · ' + status;
@@ -220,13 +259,13 @@ function createSidebarItem(player) {
   info.append(name, meta);
 
   
-  var selectLabel = 'Sélectionner';
+  let selectLabel = 'Sélectionner';
   if (player.position) {
     selectLabel = 'Retour au banc';
   }
-  var selectButton = makeButton('check', 'select-action', selectLabel, player);
-  var editButton = makeButton('pen', 'edit-action', 'Modifier', player);
-  var removeButton = makeButton('trash', 'remove-action', 'Supprimer', player);
+  let selectButton = makeButton('check', 'select-action', selectLabel, player);
+  let editButton = makeButton('pen', 'edit-action', 'Modifier', player);
+  let removeButton = makeButton('trash', 'remove-action', 'Supprimer', player);
 
   selectButton.addEventListener('click', function () {
     togglePlayerPosition(player);
@@ -238,7 +277,21 @@ function createSidebarItem(player) {
     askDeleteConfirmation(player);
   });
 
-  var actions = document.createElement('span');
+  let positionSelect = document.createElement('select');
+  positionSelect.className = 'position-select rounded bg-[#102731] text-white text-[10px] border border-[#35505a] max-w-[90px]';
+  positionSelect.setAttribute('aria-label', 'Position de ' + player.name);
+  positionSelect.dataset.playerId = player.id;
+  positionSelect.innerHTML = '<option value="">Banc</option>';
+  positions[player.role].forEach(pos => {
+    const option = document.createElement('option');
+    option.value = pos;
+    option.textContent = pos.toUpperCase();
+    option.disabled = players.some(p => p.id !== player.id && p.position === pos);
+    positionSelect.append(option);
+  });
+  positionSelect.value = player.position || '';
+  info.append(positionSelect);
+  let actions = document.createElement('span');
   actions.className = 'sidebar-actions flex items-center gap-1';
   actions.append(selectButton, editButton, removeButton);
 
@@ -247,62 +300,107 @@ function createSidebarItem(player) {
 }
 
 function createPitchPlayer(player) {
-  var article = document.createElement('article');
+  let article = document.createElement('article');
   article.className = 'pitch-player ' + player.position + ' color-' + player.role.toLowerCase();
   article.title = player.name;
+  article.setAttribute('aria-label', player.name + ', numéro ' + player.number);
 
-  var figure = document.createElement('figure');
+  let figure = document.createElement('figure');
   figure.className = 'shirt';
 
-  var image = document.createElement('img');
+  let image = document.createElement('img');
   image.src = images[player.role];
   image.alt = 'Maillot de ' + player.name;
 
-  var number = document.createElement('span');
+  let number = document.createElement('span');
   number.textContent = player.number;
 
   figure.append(image, number);
 
-  var role = document.createElement('small');
+  let role = document.createElement('small');
   role.className = 'pitch-role';
   role.textContent = player.position.replace(/[0-9]/g, '').toUpperCase();
 
-  article.append(figure, role);
+  let playerLabel = document.createElement('strong');
+  playerLabel.className = 'pitch-name';
+  playerLabel.textContent = player.name;
+  article.append(playerLabel, figure, role);
   return article;
 }
 
 
+function showAvailablePositions(player) {
+  terrain.querySelectorAll('.pitch-slot').forEach(slot => {
+    const occupied = players.some(p => p.id !== player.id && p.position === slot.dataset.position);
+    slot.classList.toggle('drop-position', slot.dataset.role === player.role && !occupied);
+  });
+}
+
 function renderPlayers() {
   playerList.innerHTML = '';
-  terrain.innerHTML = '';
   playerCount.textContent = players.length;
-
-  for (var i = 0; i < players.length; i++) {
-    var player = players[i];
-
-    playerList.append(createSidebarItem(player));
-
-    if (player.position) {
-      terrain.append(createPitchPlayer(player));
-    }
-  }
+  document.getElementById('placedCount').textContent = 'Joueurs placés : ' + players.filter(p => p.position).length + ' / 11';
+  terrain.querySelectorAll('.pitch-slot').forEach(slot => {
+    slot.querySelectorAll('.pitch-player').forEach(child => child.remove());
+    slot.classList.remove('drop-position');
+    const player = players.find(p => p.position === slot.dataset.position);
+    slot.querySelector('.slot-status').textContent = slot.dataset.position.toUpperCase() + ' · ' + (player ? 'Occupée' : 'Libre');
+    slot.setAttribute('aria-label', slot.dataset.position.toUpperCase() + ' : ' + (player ? 'Occupée par ' + player.name : 'Libre'));
+    if (player) slot.append(createPitchPlayer(player));
+  });
+  players.forEach(player => playerList.append(createSidebarItem(player)));
+  savePlayers();
 }
+
+playerList.addEventListener('change', function(event) {
+  const select = event.target.closest('.position-select');
+  if (!select) return;
+  const player = players.find(p => p.id === select.dataset.playerId);
+  if (!player) return;
+  const target = select.value;
+  if (target && (!positions[player.role].includes(target) || players.some(p => p.id !== player.id && p.position === target))) {
+    notify('Position incompatible ou occupée.');
+    renderPlayers();
+    return;
+  }
+  player.position = target || null;
+  renderPlayers();
+  notify(target ? 'Joueur placé sur le terrain.' : 'Joueur retourné au banc.');
+});
+
+terrain.addEventListener('dragover', function(event) {
+  const slot = event.target.closest('.pitch-slot');
+  if (slot && draggedPlayer && slot.dataset.role === draggedPlayer.role && !players.some(p => p.id !== draggedPlayer.id && p.position === slot.dataset.position)) event.preventDefault();
+});
+terrain.addEventListener('drop', function(event) {
+  const slot = event.target.closest('.pitch-slot');
+  if (!slot || !draggedPlayer) return;
+  event.preventDefault();
+  if (slot.dataset.role !== draggedPlayer.role || players.some(p => p.id !== draggedPlayer.id && p.position === slot.dataset.position)) {
+    notify('Position incompatible ou occupée.');
+    return;
+  }
+  draggedPlayer.position = slot.dataset.position;
+  draggedPlayer = null;
+  renderPlayers();
+  notify('Joueur placé sur le terrain.');
+});
 
 
 function handleSubmit(event) {
   event.preventDefault();
 
-  var nameValid = validateName();
-  var roleValid = validateRole();
-  var numberValid = validateNumber();
+  let nameValid = validateName();
+  let roleValid = validateRole();
+  let numberValid = validateNumber();
 
   if (!nameValid || !roleValid || !numberValid) {
     return;
   }
 
-  var name = playerName.value.trim();
-  var role = playerForm.querySelector('[name="poste"]:checked').value;
-  var number = Number(playerNumber.value);
+  let name = playerName.value.trim();
+  let role = playerForm.querySelector('[name="poste"]:checked').value;
+  let number = Number(playerNumber.value);
 
   if (editingPlayer) {
     
@@ -313,12 +411,13 @@ function handleSubmit(event) {
     editingPlayer.role = role;
     editingPlayer.number = number;
   } else {
-    players.push({ name: name, role: role, number: number, position: null });
+    players.push({ id: makeId(), name: name, role: role, number: number, position: null });
   }
 
   renderPlayers();
   playerForm.reset();
   closeModal();
+  notify(editingPlayer ? 'Joueur modifié.' : 'Effectif enregistré.');
 }
 
 
@@ -328,6 +427,7 @@ openPlayerModal.addEventListener('click', function () {
 closePlayerModal.addEventListener('click', closeModal);
 cancelPlayerModal.addEventListener('click', closeModal);
 
+document.getElementById('modalContent').addEventListener('click', function(event) { event.stopPropagation(); });
 playerModal.addEventListener('click', function (event) {
   if (event.target === playerModal) {
     closeModal();
@@ -350,8 +450,8 @@ cancelDelete.addEventListener('click', closeConfirmBar);
 playerName.addEventListener('input', validateName);
 playerNumber.addEventListener('input', validateNumber);
 
-var radios = playerForm.querySelectorAll('[name="poste"]');
-for (var i = 0; i < radios.length; i++) {
+const radios = playerForm.querySelectorAll('[name="poste"]');
+for (let i = 0; i < radios.length; i++) {
   radios[i].addEventListener('change', validateRole);
 }
 

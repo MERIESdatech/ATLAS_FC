@@ -49,6 +49,7 @@
             <span id="playerCount">0</span> joueur(s)
           </p>
         </header>
+        <p id="placedCount" class="text-slate-300 text-sm" aria-live="polite">Joueurs placés : 0 / 11</p>
         <p class="text-slate-400 text-sm">
           Cliquez sur un joueur placé pour voir sa case sur le terrain.
           <i class="fa-solid fa-pen text-white"></i> pour modifier,
@@ -61,14 +62,26 @@
 
     <section aria-label="Terrain" class="min-w-0 rounded-2xl border border-[#c7a95b] bg-[#03151bf2] p-3 shadow-[inset_0_0_15px_#0e3636] grid grid-rows-1">
       <figure aria-label="Composition tactique 4-4-2" class="relative flex-1 min-h-[430px] md:min-h-[610px] rounded-xl overflow-hidden bg-[url('assets/background/ter.png')] bg-center bg-[length:100%_100%] bg-no-repeat m-0">
-        <div class="terrain-grid"></div>
+        <div class="terrain-grid" aria-label="Onze positions du terrain">
+          <div class="pitch-slot gb" data-position="gb" data-role="GB" aria-label="GB : Libre"><span class="slot-status">GB · Libre</span></div>
+          <div class="pitch-slot dg" data-position="dg" data-role="DEF" aria-label="DG : Libre"><span class="slot-status">DG · Libre</span></div>
+          <div class="pitch-slot dc1" data-position="dc1" data-role="DEF" aria-label="DC1 : Libre"><span class="slot-status">DC1 · Libre</span></div>
+          <div class="pitch-slot dc2" data-position="dc2" data-role="DEF" aria-label="DC2 : Libre"><span class="slot-status">DC2 · Libre</span></div>
+          <div class="pitch-slot dd" data-position="dd" data-role="DEF" aria-label="DD : Libre"><span class="slot-status">DD · Libre</span></div>
+          <div class="pitch-slot mg" data-position="mg" data-role="MIL" aria-label="MG : Libre"><span class="slot-status">MG · Libre</span></div>
+          <div class="pitch-slot mc1" data-position="mc1" data-role="MIL" aria-label="MC1 : Libre"><span class="slot-status">MC1 · Libre</span></div>
+          <div class="pitch-slot mc2" data-position="mc2" data-role="MIL" aria-label="MC2 : Libre"><span class="slot-status">MC2 · Libre</span></div>
+          <div class="pitch-slot md" data-position="md" data-role="MIL" aria-label="MD : Libre"><span class="slot-status">MD · Libre</span></div>
+          <div class="pitch-slot bu1" data-position="bu1" data-role="ATT" aria-label="BU1 : Libre"><span class="slot-status">BU1 · Libre</span></div>
+          <div class="pitch-slot bu2" data-position="bu2" data-role="ATT" aria-label="BU2 : Libre"><span class="slot-status">BU2 · Libre</span></div>
+        </div>
       </figure>
     </section>
 
   </main>
 
   <div id="playerModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" class="fixed inset-0 z-[9999] hidden items-center justify-center bg-[#020617]/80 p-4 backdrop-blur-sm">
-    <section class="w-full max-w-[510px] max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-600/60 bg-[#1e293b] p-6 sm:p-7 text-white shadow-2xl">
+    <section id="modalContent" class="w-full max-w-[510px] max-h-[90vh] overflow-y-auto rounded-2xl border border-slate-600/60 bg-[#1e293b] p-6 sm:p-7 text-white shadow-2xl">
 
       <header class="mb-7 flex items-center justify-between">
         <h2 id="modalTitle" class="text-xl font-extrabold">Ajouter un joueur</h2>
@@ -149,6 +162,7 @@
     </div>
   </section>
 
+  <div id="notification" role="status" aria-live="polite" class="fixed top-5 right-5 z-[10001] hidden rounded-xl border border-[#c7a95b] bg-[#102731] px-5 py-3 text-white shadow-xl"></div>
   <script src="main.js"></script>
 </body>
 
