@@ -24,7 +24,19 @@ let players = [];
 try {
   const saved = JSON.parse(localStorage.getItem(storageKey) || '[]');
   if (Array.isArray(saved)) {
-    players = saved.filter(p => p && typeof p.name === 'string' && positionsForRole(p.role).length && Number.isInteger(Number(p.number))).map(p => ({ ...p, id: p.id || makeId(), position: positionsForRole(p.role).includes(p.position) ? p.position : null }));
+    const usedNumbers = new Set();
+    const usedIds = new Set();
+    players = saved.filter(p => {
+      if (!p || typeof p.name !== 'string' || !positionsForRole(p.role).length) return false;
+      const number = Number(p.number);
+      if (!Number.isInteger(number) || number < 1 || number > 99 || usedNumbers.has(number)) return false;
+      usedNumbers.add(number);
+      return true;
+    }).map(p => {
+      const id = typeof p.id === 'string' && p.id && !usedIds.has(p.id) ? p.id : makeId();
+      usedIds.add(id);
+      return { name: p.name, role: p.role, number: Number(p.number), id, position: positionsForRole(p.role).includes(p.position) ? p.position : null };
+    });
     const used = new Set();
     players.forEach(p => { if (p.position && used.has(p.position)) p.position = null; if (p.position) used.add(p.position); });
   }
@@ -35,6 +47,7 @@ function savePlayers() { try { localStorage.setItem(storageKey, JSON.stringify(p
 let notificationTimer;
 function notify(message) {
   const el = document.getElementById('notification');
+  if (!el) return;
   el.textContent = message;
   el.classList.remove('hidden');
   clearTimeout(notificationTimer);
@@ -111,7 +124,7 @@ function validateName() {
   if (valid) {
     nameError.textContent = '';
   } else {
-    playerName.nextElementSibling.textContent = 'Nom obligatoire : 3 à 30 caractères, lettres uniquement.';
+    nameError.textContent = 'Nom obligatoire : 3 à 30 caractères, lettres uniquement.';
   }
   return valid;
 }
@@ -140,9 +153,9 @@ function validateNumber() {
   }
 
   if (!formatOk) {
-    playerNumber.nextElementSibling.textContent = 'Numéro obligatoire entre 1 et 99.';
+    numberError.textContent = 'Numéro obligatoire entre 1 et 99.';
   } else if (duplicate) {
-    playerNumber.nextElementSibling.textContent = 'Ce numéro est déjà utilisé.';
+    numberError.textContent = 'Ce numéro est déjà utilisé.';
   } else {
     numberError.textContent = '';
   }
@@ -199,8 +212,6 @@ function closeConfirmBar() {
 
 function deletePlayer() {
   if (playerToDelete) {
-    const item = document.querySelector('[data-player-id="' + playerToDelete.id + '"]');
-    if (item) item.closest('.sidebar-player').remove();
     players = players.filter(p => p.id !== playerToDelete.id);
     notify('Joueur supprimé.');
     renderPlayers();
@@ -281,7 +292,10 @@ function createSidebarItem(player) {
   positionSelect.className = 'position-select rounded bg-[#102731] text-white text-[10px] border border-[#35505a] max-w-[90px]';
   positionSelect.setAttribute('aria-label', 'Position de ' + player.name);
   positionSelect.dataset.playerId = player.id;
-  positionSelect.innerHTML = '<option value="">Banc</option>';
+  const benchOption = document.createElement('option');
+  benchOption.value = '';
+  benchOption.textContent = 'Banc';
+  positionSelect.append(benchOption);
   positions[player.role].forEach(pos => {
     const option = document.createElement('option');
     option.value = pos;
@@ -414,10 +428,11 @@ function handleSubmit(event) {
     players.push({ id: makeId(), name: name, role: role, number: number, position: null });
   }
 
+  const wasEditing = Boolean(editingPlayer);
   renderPlayers();
   playerForm.reset();
   closeModal();
-  notify(editingPlayer ? 'Joueur modifié.' : 'Effectif enregistré.');
+  notify(wasEditing ? 'Joueur modifié.' : 'Effectif enregistré.');
 }
 
 
