@@ -11,3 +11,4 @@
 
 - **Site déployé sur Vercel :** [atlasfc.vercel.app](https://atlasfc.vercel.app/)
 - **Planification des tâches sur Jira :** [Tableau Jira — HAKKACHE](https://hamzahakkach7.atlassian.net/jira/software/projects/HAKKACHE/boards/1/backlog?atlOrigin=eyJpIjoiMWVmMTg5NTJmZDc0NGI4MGFhZGE0NjA3OTkwNWQ4M2IiLCJwIjoiaiJ9)
+- **Presentation:** [HAKKACHE](https://docs.google.com/presentation/d/15WnQ1jEz0F6SEy0-Htmgs6UIghDXf0VQ/edit?slide=id.p1#slide=id.p1)
